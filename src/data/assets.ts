@@ -1,0 +1,6 @@
+
+export const BANNER_URL = "https://cdn.discordapp.com/attachments/1367010987559092256/1372831769795104789/ComplexoGif_2_1.gif?ex=682834b7&is=6826e337&hm=fe26a7cc0504265a9728f21acc312a486187e55837670f8625e5f35d254efbe4&"
+export const THUMBNAIL_URL = "https://cdn.discordapp.com/attachments/1366575383872536606/1372833502789369876/FUGUdiA.gif?ex=68283655&is=6826e4d5&hm=d83ca27acd8965d5ba25adb409ef4cbf203b0f0104a24f238cb5176ffea265ad&&"
+export const BANNER3_URL = "https://cdn.discordapp.com/attachments/1366575383872536606/1373040758239789116/Frame_1.png?ex=6828f75a&is=6827a5da&hm=474de90397a9847bac393f763245f0f0a0fdd84d6a21aee275b32a606e3d3594&"
+export const BANNER2_URL = "https://cdn.discordapp.com/attachments/1366575383872536606/1373045420858544139/group2.png?ex=6828fbb2&is=6827aa32&hm=17aefc66215c1663b41ecd803a7a8cb88cfaae3ece5ad61113d48f9927355ffc&"
+export const BANNER_TESTE = "https://media.discordapp.net/attachments/1340155786504048701/1373855118398722048/Lado_Leste_-_Banner_Detail.gif?ex=682bedc9&is=682a9c49&hm=e4f331c3eb92207ca4a9c45cd952af76cc98f65861f277be5ef09ffb0528f43a&="
