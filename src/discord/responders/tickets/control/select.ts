@@ -6,11 +6,12 @@ import {
   createRow,
   findMember,
 } from "@magicyan/discord";
-import { channelMention, Guild, OverwriteType, TextChannel } from "discord.js";
+import { channelMention, EmbedBuilder, Guild, OverwriteType, TextChannel } from "discord.js";
 import { res, sendTicketLog } from "#functions";
 import { menus } from "#menus";
 import { settings } from "#settings";
 import { TicketCategory } from "types/TicketCategory.js";
+import { icon } from "functions/utils/emojis.js";
 
 createResponder({
   customId: "ticket/control/:action",
@@ -31,7 +32,6 @@ createResponder({
       ownerId: string;
       category: TicketCategory;
     };
-    const guildData = client.mainGuildData;
     const ticketOwner = findMember(guild).byId(urlStore.record.ownerId!);
 
     const [selected] = values;
@@ -46,13 +46,16 @@ createResponder({
               return;
             }
             const embed = createEmbed({
-              color: settings.colors.warning,
+              color: settings.colors.cpx,
               thumbnail: guild.iconURL(),
               description: brBuilder(
-                `# 🔔 Você está sendo notificado`,
+                `# ${icon.bell_white} Você está sendo notificado`,
                 `${member} está chamando no seu ticket em ${channel.url} `
               ),
-              footer: { text: guild.name, iconURL: guild.iconURL() },
+              footer: {
+                text: "™ CPX © All rights reserved",
+                iconURL: guild.iconURL(),
+              },
             });
             const row = createRow(
               createLinkButton({
@@ -121,8 +124,7 @@ createResponder({
                 })
                 .catch(console.error);
             }
-            console.log("roles", overwritesOfRoles);
-            console.log("members", overwritesOfMembers);
+
             await channel.permissionOverwrites.edit(member.id, {
               ViewChannel: true,
               SendMessages: true,
@@ -136,6 +138,23 @@ createResponder({
             await interaction.reply(
               res.success(`Ticket assumido por ${member.displayName}`)
             );
+            //edita o embed setando quem assumiu
+            const messages = await channel.messages.fetch({ limit: 10 });
+            const panelMessage = messages.find((msg) =>
+              msg.embeds?.[0]?.description?.includes("Responsavél pelo Ticket:")
+            );
+         
+            if (panelMessage) {
+              const embed = panelMessage.embeds[0];
+              const updatedDescription = embed.description?.replace(
+                "> **Responsavél pelo Ticket:**\n--",
+                `> **Responsavél pelo Ticket:**\n> ${member}`
+              );
+
+              const newEmbed = EmbedBuilder.from(embed).setDescription(updatedDescription as string);;
+
+              await panelMessage.edit({ embeds: [newEmbed] });
+            }
             return;
           }
         }

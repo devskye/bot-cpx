@@ -15,7 +15,7 @@ export function ticketStaffPanel(urlStore: URLStore) {
     },
     thumbnail: THUMBNAIL_URL,
     description: brBuilder(
-      `# ${icon.martelo} Painel Staff`,
+      `# ${icon.configuracoes_da_web} Painel Staff`,
       "*Gerencie este ticket utilizando o menu abaixo.*",
       "",
       " > Selecione uma das opções para **realizar ações administrativas** no ticket atual."

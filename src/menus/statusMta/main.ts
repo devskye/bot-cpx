@@ -29,7 +29,7 @@ export const panelStatus = () => {
         inline: true,
       },
       {
-        name: "> __**IP FiveM:**__",
+        name: "> __**IP MTA:**__",
         value: "```connect ladolesterp.com```",
         inline: false,
       },

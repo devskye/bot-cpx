@@ -155,7 +155,24 @@
     "monitor": "https://cdn.discordapp.com/emojis/1373110714184503339.png",
     "roupas": "https://cdn.discordapp.com/emojis/1373110716684439613.png",
     "sem_bugs": "https://cdn.discordapp.com/emojis/1373110718735585380.png",
-    "suporte_tecnico": "https://cdn.discordapp.com/emojis/1373110720845058122.png"
+    "suporte_tecnico": "https://cdn.discordapp.com/emojis/1373110720845058122.png",
+    "close": "https://cdn.discordapp.com/emojis/1377446706672566347.png",
+    "pontas_de_flechas_direitas": "https://cdn.discordapp.com/emojis/1377446714985680896.png",
+    "ponto_final": "https://cdn.discordapp.com/emojis/1377446717124771863.png",
+    "seta_direita": "https://cdn.discordapp.com/emojis/1377446719502942229.png",
+    "setas_direitas": "https://cdn.discordapp.com/emojis/1377446722044694549.png",
+    "staff": "https://cdn.discordapp.com/emojis/1377446723332476990.png",
+    "cancelar": "https://cdn.discordapp.com/emojis/1377459310249902212.png",
+    "escudo": "https://cdn.discordapp.com/emojis/1377459311474642984.png",
+     "configuracoes_da_web": "https://cdn.discordapp.com/emojis/1377463051300900885.png"
   },
-  "animated": {}
+  "animated": {
+    "bell_black": "https://cdn.discordapp.com/emojis/1377446702520340588.gif",
+    "bell_white": "https://cdn.discordapp.com/emojis/1377446705229987992.gif",
+    "core": "https://cdn.discordapp.com/emojis/1377446708950208643.gif",
+    "danger": "https://cdn.discordapp.com/emojis/1377446711508598866.gif",
+    "icons8_conta_verificada": "https://cdn.discordapp.com/emojis/1377446712439996438.gif",
+    "sucess": "https://cdn.discordapp.com/emojis/1377446726230610113.gif",
+    "temp": "https://cdn.discordapp.com/emojis/1377446729263091723.gif"
+  }
 }

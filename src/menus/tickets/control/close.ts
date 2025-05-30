@@ -11,7 +11,7 @@ export function ticketClosePanel(urlStore: URLStore) {
     url: urlStore,
     color: settings.colors.cpx,
     description: brBuilder(
-      `##  ${icon.martelo} Encerramento de Ticket`,
+      `##  ${icon.cancelar} Encerramento de Ticket`,
       "*Este ticket está pronto para ser finalizado.*",
       "",
       "Escolha abaixo o que deseja fazer:",
@@ -35,7 +35,7 @@ export function ticketClosePanel(urlStore: URLStore) {
     new ButtonBuilder({
       customId: "ticket/control/delete",
       label: "Deletar",
-      emoji: icon.action_x,
+      emoji: icon.cancelar,
       style: ButtonStyle.Secondary,
     })
   );

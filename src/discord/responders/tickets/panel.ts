@@ -1,34 +1,81 @@
-/* import { TicketCategory } from './../../../../.history/src/types/TicketCategory_20250509230247';
-
 import { createResponder, ResponderType, URLStore } from "#base";
 import { getIncluideRoles, res, sendTicketLog } from "#functions";
+import { menus } from "#menus";
 import {
   createLinkButton,
   createRow,
   findChannel,
   limitText,
 } from "@magicyan/discord";
-import { ChannelType, OverwriteData } from "discord.js";
-import { menus } from "#menus";
+
+import { ChannelType, OverwriteData, TextChannel } from "discord.js";
+import { newSelectMenu } from "menus/tickets/main.js";
+import { TicketCategory } from "types/TicketCategory.js";
+import { v4 as uuidv4 } from "uuid";
 
 createResponder({
-  customId: "ticket/panel/open",
+  customId: "tickets/panel/open",
   types: [ResponderType.StringSelect],
   cache: "cached",
   async run(interaction) {
-    const { client, member, guild, values } = interaction;
-    const selected = values[0] as keyof typeof TicketCategory
-    console.log("valor",values)
+    const { client, guild, member, values } = interaction;
+    const selectedCategoryId = values[0] as TicketCategory;
     const guildData = client.mainGuildData;
-    const ticketParentId = guildData.parents?.[selected].id ?? "";
+
+    // Check for existing tickets in any category
+    const allTicketCategories = [
+      "donate",
+      "whitelist",
+      "suporte",
+      "streamer",
+      "ilegal",
+      "legal",
+      "bugs",
+      "kids",
+      "roupas",
+      "var",
+      "priority",
+    ] as const;
+    let existingTicketChannel: TextChannel | undefined;
+
+    for (const category of allTicketCategories) {
+      const categoryId = guildData.parents?.[category]?.id;
+      if (!categoryId) continue;
+
+      const ticketChannel = findChannel(guild)
+        .inCategoryId(categoryId)
+        .byFilter((c) => Boolean(c.topic?.includes(member.user.id)));
+
+      if (ticketChannel) {
+        existingTicketChannel = ticketChannel;
+        break;
+      }
+    }
+
+    if (existingTicketChannel) {
+      const row = createRow(
+        createLinkButton({
+          url: existingTicketChannel.url,
+          label: "Abrir ticket",
+        })
+      );
+      await interaction.reply(
+        res.danger(`Você já possui um ticket aberto!`, { components: [row] })
+      );
+      return;
+    }
+
+    const ticketParentId = guildData.parents?.[selectedCategoryId]?.id ?? "";
     const ticketParent = findChannel(guild, ChannelType.GuildCategory).byId(
       ticketParentId
     );
 
     await interaction.reply(
-      res.warning(`Aguarde um momento, estamos criando o seu ticket`)
+      res.cpx(`Aguarde um momento, estamos criando o seu ticket...`)
     );
-
+     await interaction.message.edit({
+      components: [newSelectMenu],
+    }) 
     if (!ticketParent) {
       interaction.editReply(
         res.danger(
@@ -38,20 +85,10 @@ createResponder({
       return;
     }
 
-    const ticketChannel = findChannel(guild)
-      .inCategoryId(ticketParentId)
-      .byFilter((c) => Boolean(c.topic?.includes(member.user.id)));
-
-    if (ticketChannel) {
-      const row = createRow(
-        createLinkButton({ url: ticketChannel.url, label: "Abrir ticket" })
-      );
-      interaction.editReply(
-        res.danger(`Você já possui um ticket aberto!`, { components: [row] })
-      );
-      return;
-    }
-    const roles = getIncluideRoles(guildData.tickets?.roles, guild);
+    const roles = getIncluideRoles(
+      guildData.tickets?.roles?.[selectedCategoryId],
+      guild
+    );
 
     const perms: OverwriteData[] = roles.map((role) => ({
       id: role.id,
@@ -61,11 +98,11 @@ createResponder({
     perms.push(
       { id: guild.id, deny: ["ViewChannel"], allow: ["SendMessages"] },
       { id: member.id, allow: ["ViewChannel"] }
-    ); // deny : pra todo mundo nega ver o canal e allow pra todo mundo pode enviar msg, logo quem pode enviar msg só é quem ver
+    );
 
     guild.channels
       .create({
-        name: `${limitText(member.user.username, 18)}-ticket`,
+        name: `${limitText(member.user.username, 18)}-${selectedCategoryId}`,
         parent: ticketParentId,
         permissionOverwrites: perms,
         topic: member.id,
@@ -75,21 +112,25 @@ createResponder({
         const row = createRow(
           createLinkButton({ url: channel.url, label: "Acessar Ticket" })
         );
+
         const date = new Date();
-        const urlStore = new URLStore(channel.url); // função pra salvar dados na url
+        const id =  uuidv4().replace(/-/g, '').substring(0, 6).toUpperCase();
+        const urlStore = new URLStore(channel.url);
         urlStore.set("ownerId", member.user.id);
         urlStore.set("ownerUsername", member.user.username);
-
+        urlStore.set("category", selectedCategoryId);
         urlStore.set("createdAt", date.toISOString());
-        console.log(urlStore);
-        console.log(urlStore.record);
-        
-        channel.send(menus.tickets.control.main(member, urlStore));
-        interaction.editReply(res.success(`Ticket criado com sucesso!`,{components:[row]}));
-        sendTicketLog({
-            color: "success",guild,executor:member,
-            text:"Novo ticket aberto",
+        urlStore.set("id",id );
 
+        channel.send(menus.tickets.control.main(member, urlStore));
+        interaction.editReply(
+          res.cpx(`Ticket criado com sucesso!`, { components: [row] })
+        );
+        sendTicketLog({
+          color: "success",
+          guild,
+          executor: member,
+          text: `Novo ticket aberto na categoria ${selectedCategoryId}`,
         });
       })
       .catch(() => {
@@ -97,4 +138,3 @@ createResponder({
       });
   },
 });
- */

@@ -82,7 +82,7 @@ createResponder({
         const attachment = await createTranscript(channel as never, {
           limit: -1,
           poweredBy: false,
-          filename: "ticket-transcript-html",
+          filename: "ticket-transcript.html",
           returnType: ExportReturnType.Attachment,
           saveImages: true,
         });
@@ -126,7 +126,7 @@ createResponder({
       case "delete": {
         interaction.showModal({
           customId: "reason/modal",
-          title: "Formulário",
+          title: "-- CONSIDERAÇÕES FINAIS --",
           components: createModalFields({
             reason: {
               label: "Considerações finais",
